@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Art — Rachel Builds</title>
+<meta name="description" content="Generative code art and personal paintings by Rachel — creative experiments at the intersection of technology and expression.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* === ART-SPECIFIC === */
+
+  /* Generative art section */
+  .gen-section {
+    padding: 5rem 4rem;
+    border-bottom: 1px solid var(--green-border);
+  }
+
+  .gen-heading {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.78rem, 3.3vw, 2.7rem);
+    color: var(--ink);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .gen-heading em { font-style: italic; color: var(--green); }
+
+  .gen-intro {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.12rem, 1.5vw, 1.28rem);
+    color: var(--ink-dim);
+    line-height: 1.85;
+    max-width: 60ch;
+    margin-bottom: 3rem;
+  }
+
+  .gen-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--green-border);
+  }
+
+  .gen-piece {
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gen-piece canvas {
+    display: block;
+    width: 100%;
+    height: 420px;
+    cursor: crosshair;
+  }
+
+  .gen-piece-info {
+    padding: 1.8rem 2rem;
+    border-top: 1px solid var(--green-border);
+  }
+
+  .gen-piece-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .gen-piece-number {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green);
+    letter-spacing: 0.25em;
+  }
+
+  .gen-piece-tech {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.15em;
+  }
+
+  .gen-piece-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.34rem, 2.2vw, 1.78rem);
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+    line-height: 1.2;
+  }
+
+  .gen-piece-title em { font-style: italic; color: var(--green); }
+
+  .gen-piece-desc {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 1.12rem;
+    color: var(--ink-dim);
+    line-height: 1.75;
+  }
+
+  .gen-piece-hint {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    letter-spacing: 0.15em;
+    margin-top: 0.8rem;
+  }
+
+  /* Full-width generative piece */
+  .gen-piece.full-width {
+    grid-column: 1 / -1;
+    background: var(--bg3);
+  }
+
+  .gen-piece.full-width canvas {
+    height: 360px;
+  }
+
+  .gen-piece.full-width .gen-piece-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .gen-piece.full-width .gen-piece-right {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+    line-height: 1.8;
+    padding-top: 0.4rem;
+  }
+
+  .gen-piece.full-width .gen-piece-right code {
+    color: var(--green);
+  }
+
+  /* Paintings section */
+  .paintings-section {
+    padding: 5rem 4rem;
+    border-bottom: 1px solid var(--green-border);
+    background: var(--bg2);
+  }
+
+  .paintings-heading {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.78rem, 3.3vw, 2.7rem);
+    color: var(--ink);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+  }
+
+  .paintings-heading em { font-style: italic; color: var(--green); }
+
+  .paintings-intro {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.12rem, 1.5vw, 1.28rem);
+    color: var(--ink-dim);
+    line-height: 1.85;
+    max-width: 60ch;
+    margin-bottom: 3rem;
+  }
+
+  .paintings-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--green-border);
+  }
+
+  .painting-card {
+    background: var(--bg);
+    overflow: hidden;
+    position: relative;
+    transition: background 0.2s;
+  }
+
+  .painting-card:hover { background: var(--bg2); }
+
+  .painting-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    background: var(--bg3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    border-bottom: 1px solid var(--green-border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .painting-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(57,255,110,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57,255,110,0.02) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .painting-placeholder-icon {
+    width: 40px;
+    height: 40px;
+    border: 1.5px solid var(--green-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .painting-placeholder-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: var(--green-dim);
+    stroke-width: 1.5;
+  }
+
+  .painting-placeholder-text {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    letter-spacing: 0.2em;
+  }
+
+  .painting-card img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    display: block;
+    border-bottom: 1px solid var(--green-border);
+    filter: saturate(0.85);
+    transition: filter 0.3s;
+  }
+
+  .painting-card:hover img { filter: saturate(1); }
+
+  .painting-info {
+    padding: 1.5rem 1.5rem;
+  }
+
+  .painting-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 1.22rem;
+    color: var(--ink);
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+
+  .painting-title em { font-style: italic; color: var(--green); }
+
+  .painting-detail {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.15em;
+  }
+
+  /* Art responsive */
+  @media (max-width: 900px) {
+    .gen-section { padding: 3rem 1.5rem; }
+    .gen-grid { grid-template-columns: 1fr; }
+    .gen-piece canvas { height: 320px; }
+    .gen-piece.full-width .gen-piece-info { grid-template-columns: 1fr; }
+    .paintings-section { padding: 3rem 1.5rem; }
+    .paintings-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 600px) {
+    .paintings-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">rachel<span>.</span>builds<span class="nav-cursor"></span></a>
+  <ul class="nav-links">
+    <li><a href="work.html">Work</a></li>
+    <li><a href="art.html" class="active">Art</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="mailto:castellettirachel@gmail.com" class="nav-contact-link">castellettirachel@gmail.com</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <p class="page-eyebrow">02 — art</p>
+  <h1 class="page-title">Generative<br><em>& Painted</em></h1>
+  <p class="page-subtitle">Code that draws itself and paint that doesn't. Experiments in generative systems, algorithmic beauty, and the things I make when no one's asking me to.</p>
+</header>
+
+<!-- ====================================================
+     GENERATIVE / CODE ART
+===================================================== -->
+<section class="gen-section">
+  <p class="section-label">generative work</p>
+  <h2 class="gen-heading">Code <em>Draws Itself</em></h2>
+  <p class="gen-intro">
+    Interactive pieces built with vanilla JavaScript and canvas. Each one is alive — move your cursor, click, resize your window. No two frames are the same.
+  </p>
+
+  <div class="gen-grid">
+
+    <!-- PIECE 1: PARTICLE FIELD -->
+    <div class="gen-piece">
+      <canvas id="particleField"></canvas>
+      <div class="gen-piece-info">
+        <div class="gen-piece-meta">
+          <span class="gen-piece-number">001</span>
+          <span class="gen-piece-tech">CANVAS · JS</span>
+        </div>
+        <h3 class="gen-piece-title">Particle <em>Field</em></h3>
+        <p class="gen-piece-desc">Particles drift and connect when close enough — forming organic constellations that follow your cursor.</p>
+        <p class="gen-piece-hint">[ move cursor to interact ]</p>
+      </div>
+    </div>
+
+    <!-- PIECE 2: FLOW LINES -->
+    <div class="gen-piece">
+      <canvas id="flowField"></canvas>
+      <div class="gen-piece-info">
+        <div class="gen-piece-meta">
+          <span class="gen-piece-number">002</span>
+          <span class="gen-piece-tech">CANVAS · PERLIN NOISE</span>
+        </div>
+        <h3 class="gen-piece-title">Flow <em>Lines</em></h3>
+        <p class="gen-piece-desc">Hundreds of agents trace paths through a Perlin-like noise field — a study in emergent pattern from simple rules.</p>
+        <p class="gen-piece-hint">[ click to regenerate ]</p>
+      </div>
+    </div>
+
+    <!-- PIECE 3: FULL-WIDTH — RECURSIVE TREE -->
+    <div class="gen-piece full-width">
+      <canvas id="fractalTree"></canvas>
+      <div class="gen-piece-info">
+        <div class="gen-piece-left">
+          <div class="gen-piece-meta">
+            <span class="gen-piece-number">003</span>
+            <span class="gen-piece-tech">CANVAS · RECURSION</span>
+          </div>
+          <h3 class="gen-piece-title">Recursive <em>Growth</em></h3>
+          <p class="gen-piece-desc">A fractal tree that grows and sways. Each branch angle is influenced by cursor position — pull the wind left or right.</p>
+          <p class="gen-piece-hint">[ move cursor left/right to change wind ]</p>
+        </div>
+        <div class="gen-piece-right">
+          The algorithm starts with a trunk and recursively splits into branches. Each level reduces length by a decay factor and rotates by an angle offset. Cursor position maps to a <code>windAngle</code> variable that biases all branch rotations, creating the illusion of a breeze. Depth is capped at 11 levels to keep things smooth.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ====================================================
+     PAINTINGS / PERSONAL ART
+===================================================== -->
+<section class="paintings-section">
+  <p class="section-label">paintings &amp; personal work</p>
+  <h2 class="paintings-heading">By <em>Hand</em></h2>
+  <p class="paintings-intro">
+    The other side of the screen. Acrylics, watercolour, and whatever else is within reach. These are the things I make to slow down.
+  </p>
+
+  <div class="paintings-grid">
+
+    <!-- Painting slots — replace placeholders with <img> tags when ready -->
+    <div class="painting-card">
+      <div class="painting-placeholder">
+        <div class="painting-placeholder-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+        <span class="painting-placeholder-text">image coming soon</span>
+      </div>
+      <div class="painting-info">
+        <p class="painting-title">Untitled <em>I</em></p>
+        <p class="painting-detail">ACRYLIC ON CANVAS · 2024</p>
+      </div>
+    </div>
+
+    <div class="painting-card">
+      <div class="painting-placeholder">
+        <div class="painting-placeholder-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+        <span class="painting-placeholder-text">image coming soon</span>
+      </div>
+      <div class="painting-info">
+        <p class="painting-title">Untitled <em>II</em></p>
+        <p class="painting-detail">WATERCOLOUR · 2024</p>
+      </div>
+    </div>
+
+    <div class="painting-card">
+      <div class="painting-placeholder">
+        <div class="painting-placeholder-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+        <span class="painting-placeholder-text">image coming soon</span>
+      </div>
+      <div class="painting-info">
+        <p class="painting-title">Untitled <em>III</em></p>
+        <p class="painting-detail">MIXED MEDIA · 2025</p>
+      </div>
+    </div>
+
+    <div class="painting-card">
+      <div class="painting-placeholder">
+        <div class="painting-placeholder-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+        <span class="painting-placeholder-text">image coming soon</span>
+      </div>
+      <div class="painting-info">
+        <p class="painting-title">Untitled <em>IV</em></p>
+        <p class="painting-detail">ACRYLIC · 2025</p>
+      </div>
+    </div>
+
+    <div class="painting-card">
+      <div class="painting-placeholder">
+        <div class="painting-placeholder-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+        <span class="painting-placeholder-text">image coming soon</span>
+      </div>
+      <div class="painting-info">
+        <p class="painting-title">Untitled <em>V</em></p>
+        <p class="painting-detail">WATERCOLOUR · 2025</p>
+      </div>
+    </div>
+
+    <div class="painting-card">
+      <div class="painting-placeholder">
+        <div class="painting-placeholder-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+        </div>
+        <span class="painting-placeholder-text">image coming soon</span>
+      </div>
+      <div class="painting-info">
+        <p class="painting-title">Untitled <em>VI</em></p>
+        <p class="painting-detail">MIXED MEDIA · 2025</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHILOSOPHY STRIP -->
+<div class="philosophy-strip">
+  <div class="philosophy-glyph">"</div>
+  <p class="philosophy-text">
+    Art is just code with <em>feelings</em> — and code is just art with <em>rules.</em>
+  </p>
+</div>
+
+<!-- CTA ROW -->
+<div class="cta-row">
+  <p class="cta-text">See the <em>professional</em> side?</p>
+  <div class="cta-buttons">
+    <a href="work.html" class="btn-ghost">View my work</a>
+    <a href="mailto:castellettirachel@gmail.com" class="btn-primary">Get in touch</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <a href="index.html" class="footer-logo">rachel.builds</a>
+    <span class="footer-sub">Creative Technologist — Edmonton, AB</span>
+  </div>
+
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/rachel-castelletti/" class="footer-link" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 23.2 24 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="mailto:castellettirachel@gmail.com" class="footer-link">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+      Email
+    </a>
+  </div>
+
+  <div class="footer-right">
+    <div>[system: ready]</div>
+    <div>&copy; 2025 Rachel Builds</div>
+  </div>
+</footer>
+
+
+<!-- ====================================================
+     GENERATIVE ART SCRIPTS
+===================================================== -->
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   001 — PARTICLE FIELD
+   Drifting particles that form connections when near each other.
+   Cursor acts as an attractor.
+═══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const canvas = document.getElementById('particleField');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const PARTICLE_COUNT = 120;
+  const CONNECT_DIST = 110;
+  const MOUSE_RADIUS = 180;
+  let mouse = { x: -9999, y: -9999 };
+
+  const particles = [];
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = canvas.width = rect.width;
+    H = canvas.height = 420;
+  }
+
+  function init() {
+    resize();
+    particles.length = 0;
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        r: Math.random() * 1.5 + 0.5,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    /* update */
+    for (const p of particles) {
+      /* gentle attraction to mouse */
+      const dx = mouse.x - p.x;
+      const dy = mouse.y - p.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < MOUSE_RADIUS && dist > 0) {
+        const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.012;
+        p.vx += dx / dist * force;
+        p.vy += dy / dist * force;
+      }
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      /* damping */
+      p.vx *= 0.998;
+      p.vy *= 0.998;
+
+      /* wrap */
+      if (p.x < 0) p.x = W;
+      if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H;
+      if (p.y > H) p.y = 0;
+    }
+
+    /* connections */
+    ctx.lineWidth = 0.6;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < CONNECT_DIST) {
+          const alpha = (1 - d / CONNECT_DIST) * 0.35;
+          ctx.strokeStyle = `rgba(57,255,110,${alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    /* particles */
+    for (const p of particles) {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(57,255,110,0.7)';
+      ctx.fill();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+  });
+
+  window.addEventListener('resize', () => { resize(); });
+  init();
+  requestAnimationFrame(draw);
+}());
+
+
+/* ═══════════════════════════════════════════════════════════════
+   002 — FLOW FIELD
+   Agents trace paths through a noise field.
+   Click to regenerate.
+═══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const canvas = document.getElementById('flowField');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const AGENTS = 300;
+  const SCALE = 0.004;
+  let seed = Math.random() * 1000;
+  let agents = [];
+  let frameCount = 0;
+
+  /* simple value noise */
+  function hash(x, y) {
+    let h = seed + x * 374761393 + y * 668265263;
+    h = (h ^ (h >> 13)) * 1274126177;
+    return ((h ^ (h >> 16)) & 0x7fffffff) / 0x7fffffff;
+  }
+
+  function noise2d(x, y) {
+    const ix = Math.floor(x), iy = Math.floor(y);
+    const fx = x - ix, fy = y - iy;
+    const sx = fx * fx * (3 - 2 * fx);
+    const sy = fy * fy * (3 - 2 * fy);
+    const a = hash(ix, iy);
+    const b = hash(ix + 1, iy);
+    const c = hash(ix, iy + 1);
+    const d = hash(ix + 1, iy + 1);
+    return a + (b - a) * sx + (c - a) * sy + (a - b - c + d) * sx * sy;
+  }
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = canvas.width = rect.width;
+    H = canvas.height = 420;
+  }
+
+  function init() {
+    resize();
+    ctx.fillStyle = 'rgba(10,13,11,1)';
+    ctx.fillRect(0, 0, W, H);
+    agents = [];
+    frameCount = 0;
+    for (let i = 0; i < AGENTS; i++) {
+      agents.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        speed: Math.random() * 1.2 + 0.4,
+      });
+    }
+  }
+
+  function draw() {
+    frameCount++;
+    /* subtle fade for trails */
+    ctx.fillStyle = 'rgba(10,13,11,0.02)';
+    ctx.fillRect(0, 0, W, H);
+
+    for (const a of agents) {
+      const angle = noise2d(a.x * SCALE, a.y * SCALE) * Math.PI * 4;
+      const prevX = a.x;
+      const prevY = a.y;
+      a.x += Math.cos(angle) * a.speed;
+      a.y += Math.sin(angle) * a.speed;
+
+      /* draw line */
+      ctx.strokeStyle = `rgba(57,255,110,0.12)`;
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      ctx.moveTo(prevX, prevY);
+      ctx.lineTo(a.x, a.y);
+      ctx.stroke();
+
+      /* respawn if out of bounds */
+      if (a.x < 0 || a.x > W || a.y < 0 || a.y > H) {
+        a.x = Math.random() * W;
+        a.y = Math.random() * H;
+      }
+    }
+
+    if (frameCount < 800) {
+      requestAnimationFrame(draw);
+    }
+  }
+
+  canvas.addEventListener('click', () => {
+    seed = Math.random() * 1000;
+    init();
+    requestAnimationFrame(draw);
+  });
+
+  window.addEventListener('resize', () => { init(); requestAnimationFrame(draw); });
+  init();
+  requestAnimationFrame(draw);
+}());
+
+
+/* ═══════════════════════════════════════════════════════════════
+   003 — FRACTAL TREE
+   Recursive branching tree. Cursor X controls wind angle.
+═══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+  const canvas = document.getElementById('fractalTree');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  let windAngle = 0;
+  let time = 0;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    W = canvas.width = rect.width;
+    H = canvas.height = 360;
+  }
+
+  function branch(x, y, len, angle, depth) {
+    if (depth === 0 || len < 2) return;
+
+    const sway = Math.sin(time * 0.002 + depth * 0.5) * 0.03;
+    const endX = x + Math.cos(angle + sway) * len;
+    const endY = y + Math.sin(angle + sway) * len;
+
+    const alpha = 0.15 + (depth / 11) * 0.5;
+    ctx.strokeStyle = `rgba(57,255,110,${alpha})`;
+    ctx.lineWidth = depth * 0.6;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(endX, endY);
+    ctx.stroke();
+
+    /* glow on tips */
+    if (depth <= 2) {
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = 'rgba(57,255,110,0.4)';
+      ctx.beginPath();
+      ctx.arc(endX, endY, 1.2, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(57,255,110,0.5)';
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    const decay = 0.7 + Math.random() * 0.05;
+    const spread = 0.42 + windAngle * 0.3;
+
+    branch(endX, endY, len * decay, angle - spread + windAngle * 0.15, depth - 1);
+    branch(endX, endY, len * decay, angle + spread + windAngle * 0.15, depth - 1);
+  }
+
+  function draw() {
+    time++;
+    ctx.clearRect(0, 0, W, H);
+
+    /* trunk starts from bottom center */
+    const startX = W / 2;
+    const startY = H - 20;
+    const trunkLen = H * 0.22;
+
+    branch(startX, startY, trunkLen, -Math.PI / 2, 11);
+    requestAnimationFrame(draw);
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) / rect.width;
+    windAngle = (mx - 0.5) * 0.8;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    windAngle = 0;
+  });
+
+  window.addEventListener('resize', resize);
+  resize();
+  requestAnimationFrame(draw);
+}());
+
+
+/* ═══════════════════════════════════════════════════════════════
+   ART PAGE RABBIT
+   A pixel rabbit hops across the paintings section.
+═══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  const section = document.querySelector('.paintings-section');
+  if (!section) return;
+
+  section.style.position = 'relative';
+
+  const canvas = document.createElement('canvas');
+  canvas.id = 'artRabbitCanvas';
+  Object.assign(canvas.style, {
+    position: 'absolute', top: '0', left: '0',
+    width: '100%', height: '100%',
+    pointerEvents: 'none',
+    zIndex: '10',
+  });
+  section.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  const S = 2;
+
+  /* front-facing rabbit sprite */
+  const SPR = [
+    [0,0,1,0,0,1,0,0],
+    [0,0,1,0,0,1,0,0],
+    [0,1,1,1,1,1,1,0],
+    [0,1,2,0,0,2,1,0],
+    [0,1,1,1,1,1,1,0],
+    [0,0,1,1,1,1,0,0],
+    [0,1,0,0,0,0,1,0],
+    [0,0,0,0,0,0,0,0],
+  ];
+
+  /* paintbrush sprite */
+  const SPR_BRUSH = [
+    [0,0,0,0,0,0,3,3],
+    [0,0,0,0,0,3,3,3],
+    [0,0,0,0,3,3,0,0],
+    [0,0,0,3,0,0,0,0],
+    [0,0,3,0,0,0,0,0],
+    [0,4,0,0,0,0,0,0],
+    [4,4,0,0,0,0,0,0],
+    [4,0,0,0,0,0,0,0],
+  ];
+
+  const SPR_W = 8 * S;
+  const SPR_H = 8 * S;
+
+  let cw, ch, frame = 0;
+  const rabbit = { x: 0, y: 0, phase: 'hopping', hopT: 0, dir: 1 };
+
+  function resize() {
+    cw = canvas.width = section.offsetWidth;
+    ch = canvas.height = section.offsetHeight;
+    rabbit.y = ch - SPR_H - 12;
+    if (rabbit.phase === 'hopping') rabbit.x = -SPR_W;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawSpr(spr, x, y, colors) {
+    for (let row = 0; row < spr.length; row++)
+      for (let col = 0; col < spr[row].length; col++) {
+        const v = spr[row][col];
+        if (!v) continue;
+        ctx.fillStyle = colors[v] || '#fff';
+        ctx.fillRect(x + col * S, y + row * S, S, S);
+      }
+  }
+
+  function loop() {
+    ctx.clearRect(0, 0, cw, ch);
+    frame++;
+
+    /* hop across */
+    rabbit.hopT += 0.03;
+    rabbit.x += 0.7;
+    const hopY = rabbit.y + Math.sin(rabbit.hopT * 4) * -6;
+
+    if (rabbit.x > cw + SPR_W * 2) rabbit.x = -SPR_W * 2;
+
+    /* draw rabbit */
+    ctx.save();
+    ctx.shadowBlur = 8;
+    ctx.shadowColor = '#39ff6e';
+    drawSpr(SPR, Math.round(rabbit.x), Math.round(hopY),
+      { 1: '#39ff6e', 2: '#003311' });
+    ctx.restore();
+
+    /* draw paintbrush next to rabbit */
+    drawSpr(SPR_BRUSH, Math.round(rabbit.x + SPR_W + 2), Math.round(hopY + 2),
+      { 3: '#c8a45a', 4: '#ff6644' });
+
+    requestAnimationFrame(loop);
+  }
+
+  setTimeout(() => requestAnimationFrame(loop), 800);
+}());
+</script>
+
+<script src="main.js"></script>
+
+</body>
+</html>

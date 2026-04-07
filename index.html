@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rachel Builds — Creative Technologist</title>
+<meta name="description" content="Rachel Builds — Creative Technologist. Pixel lover, serial tinkerer, professional rabbit-hole diver. Based in Edmonton, AB.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* === INDEX-SPECIFIC: HERO === */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(57,255,110,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57,255,110,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  .orb {
+    position: absolute;
+    right: -8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 620px;
+    height: 620px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(57,255,110,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    animation: orbPulse 7s ease-in-out infinite;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    color: var(--green);
+    letter-spacing: 0.25em;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+
+  .hero-eyebrow::before { content: '> '; color: var(--green-dim); }
+
+  .hero-name {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(3.9rem, 8.5vw, 7.7rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--green);
+    text-shadow: 0 0 40px rgba(57,255,110,0.35);
+  }
+
+  .typing-wrap {
+    font-family: var(--mono);
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+    margin-top: 1.2rem;
+    display: flex;
+    align-items: center;
+    min-height: 1.4em;
+    visibility: hidden;
+  }
+
+  .type-cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1em;
+    background: var(--green);
+    margin-left: 2px;
+    vertical-align: middle;
+    flex-shrink: 0;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+    opacity: 0;
+  }
+
+  /* === MARQUEE === */
+  .marquee-section {
+    border-top: 1px solid var(--green-border);
+    border-bottom: 1px solid var(--green-border);
+    background: var(--bg2);
+    padding: 1rem 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .marquee-section::before,
+  .marquee-section::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .marquee-section::before {
+    left: 0;
+    background: linear-gradient(to right, var(--bg2), transparent);
+  }
+
+  .marquee-section::after {
+    right: 0;
+    background: linear-gradient(to left, var(--bg2), transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 28s linear infinite;
+  }
+
+  .marquee-track:hover { animation-play-state: paused; }
+
+  .marquee-inner {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  .marquee-item {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .marquee-item::after {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    flex-shrink: 0;
+  }
+
+  .marquee-item.highlight { color: var(--green); }
+
+  /* === FEATURED WORK === */
+  .featured-section {
+    padding: 5rem 4rem;
+    border-bottom: 1px solid var(--green-border);
+  }
+
+  .section-label { margin-bottom: 0.6rem; }
+
+  .section-heading {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(2rem, 3.8vw, 3.1rem);
+    color: var(--ink);
+    margin-bottom: 3rem;
+    line-height: 1.1;
+  }
+
+  .section-heading em { font-style: italic; color: var(--green); }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5px;
+    background: var(--green-border);
+  }
+
+  .project-card {
+    background: var(--bg2);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: block;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--green-faint);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .project-card:hover::before { opacity: 1; }
+  .project-card:hover .project-arrow { transform: translate(4px,-4px); color: var(--green); }
+
+  .project-type {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    letter-spacing: 0.25em;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.55rem, 2.7vw, 2.2rem);
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 0.8rem;
+  }
+
+  .project-title em { font-style: italic; color: var(--green); }
+
+  .project-desc {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 1.12rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+    line-height: 1.75;
+    max-width: 36ch;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag { padding: 0.18rem 0.55rem; }
+
+  .project-arrow {
+    position: absolute;
+    top: 2rem; right: 2rem;
+    font-size: 1rem;
+    color: var(--ink-dim);
+    transition: all 0.25s;
+  }
+
+  .view-all-wrap {
+    margin-top: 2.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .view-all {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--green);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    transition: opacity 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .view-all::after { content: ' →'; }
+  .view-all:hover { opacity: 0.7; }
+
+  /* === VESPER DIGEST PLAYER === */
+  .vesper-card { cursor: default; }
+
+  .vesper-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .vesper-card:hover::before { opacity: 1; }
+  .vesper-card:hover .project-arrow { transform: translate(4px,-4px); color: var(--green); }
+
+  .digest-player {
+    position: relative;
+    z-index: 1;
+    margin-top: 1.8rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--green-border);
+  }
+
+  .digest-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.7rem;
+  }
+
+  .digest-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--green-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .digest-label::before { content: '▸ '; }
+
+  .digest-date {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .digest-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .digest-play-btn {
+    background: none;
+    border: 1px solid var(--green-border);
+    color: var(--green);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .digest-play-btn:hover {
+    border-color: var(--green);
+    background: var(--green-faint);
+    box-shadow: 0 0 12px rgba(57,255,110,0.15);
+  }
+
+  .digest-track {
+    flex: 1;
+    height: 3px;
+    background: rgba(57,255,110,0.12);
+    position: relative;
+    cursor: pointer;
+    border-radius: 1px;
+  }
+
+  .digest-track::after {
+    content: '';
+    position: absolute;
+    inset: -6px 0;
+  }
+
+  .digest-progress {
+    height: 100%;
+    width: 0%;
+    background: var(--green);
+    box-shadow: 0 0 6px rgba(57,255,110,0.4);
+    border-radius: 1px;
+    transition: width 0.1s linear;
+  }
+
+  .digest-time {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+    min-width: 3.2em;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* === NAV CARDS === */
+  .nav-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    background: var(--green-border);
+    border-top: 1px solid var(--green-border);
+  }
+
+  .nav-card {
+    background: var(--bg3);
+    padding: 2.5rem;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    display: block;
+  }
+
+  .nav-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--green-faint);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .nav-card:hover::before { opacity: 1; }
+  .nav-card:hover .card-arrow { transform: translate(4px,-4px); color: var(--green); }
+
+  .card-number {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    letter-spacing: 0.25em;
+    margin-bottom: 1.2rem;
+  }
+
+  .card-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.55rem, 2.7vw, 2.2rem);
+    color: var(--ink);
+    line-height: 1.15;
+    margin-bottom: 0.6rem;
+  }
+
+  .card-title em { font-style: italic; color: var(--green); }
+
+  .card-desc {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 1.06rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+    line-height: 1.75;
+    max-width: 24ch;
+  }
+
+  .card-tag {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green);
+    background: rgba(57,255,110,0.06);
+    border: 1px solid rgba(57,255,110,0.18);
+    padding: 0.25rem 0.6rem;
+    display: inline-block;
+    margin-top: 1.2rem;
+    letter-spacing: 0.12em;
+  }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 1.8rem; right: 1.8rem;
+    font-size: 1rem;
+    color: var(--ink-dim);
+    transition: all 0.25s;
+  }
+
+  /* === INDEX KEYFRAMES === */
+  @keyframes orbPulse {
+    0%, 100% { transform: translateY(-50%) scale(1); opacity: 1; }
+    50%       { transform: translateY(-50%) scale(1.1); opacity: 0.6; }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* === INDEX RESPONSIVE === */
+  @media (max-width: 900px) {
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .featured-section { padding: 3rem 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .nav-cards { grid-template-columns: 1fr; }
+    .orb { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">rachel<span>.</span>builds<span class="nav-cursor"></span></a>
+  <ul class="nav-links">
+    <li><a href="work.html">Work</a></li>
+    <li><a href="art.html">Art</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="mailto:castellettirachel@gmail.com" class="nav-contact-link">castellettirachel@gmail.com</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="orb"></div>
+  <p class="hero-eyebrow">rachelbuilds.ca — est. 2025</p>
+  <h1 class="hero-name" id="heroName"></h1>
+  <div class="typing-wrap" id="typingWrap">
+    <span id="typingText"></span><span class="type-cursor"></span>
+  </div>
+  <div class="hero-cta" id="heroCta">
+    <a href="work.html" class="btn-primary">View my work</a>
+    <a href="mailto:castellettirachel@gmail.com" class="btn-ghost">Hire me</a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-inner">
+      <span class="marquee-item highlight">Excel &amp; Power Query</span>
+      <span class="marquee-item">Program Management</span>
+      <span class="marquee-item highlight">Anthropic API</span>
+      <span class="marquee-item">Stakeholder Relations</span>
+      <span class="marquee-item highlight">Python &amp; Flask</span>
+      <span class="marquee-item">Prompt Engineering</span>
+      <span class="marquee-item highlight">HTML / CSS / JS</span>
+      <span class="marquee-item">Workflow Automation</span>
+      <span class="marquee-item highlight">Pivot Tables</span>
+      <span class="marquee-item">Process Design</span>
+      <span class="marquee-item highlight">Local LLMs</span>
+      <span class="marquee-item">Grant Reporting</span>
+      <span class="marquee-item highlight">Creative Technology</span>
+      <span class="marquee-item">AI-Powered Tools</span>
+    </div>
+    <div class="marquee-inner" aria-hidden="true">
+      <span class="marquee-item highlight">Excel &amp; Power Query</span>
+      <span class="marquee-item">Program Management</span>
+      <span class="marquee-item highlight">Anthropic API</span>
+      <span class="marquee-item">Stakeholder Relations</span>
+      <span class="marquee-item highlight">Python &amp; Flask</span>
+      <span class="marquee-item">Prompt Engineering</span>
+      <span class="marquee-item highlight">HTML / CSS / JS</span>
+      <span class="marquee-item">Workflow Automation</span>
+      <span class="marquee-item highlight">Pivot Tables</span>
+      <span class="marquee-item">Process Design</span>
+      <span class="marquee-item highlight">Local LLMs</span>
+      <span class="marquee-item">Grant Reporting</span>
+      <span class="marquee-item highlight">Creative Technology</span>
+      <span class="marquee-item">AI-Powered Tools</span>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED WORK -->
+<section class="featured-section" id="featured">
+  <p class="section-label">featured work</p>
+  <h2 class="section-heading">Selected <em>Projects</em></h2>
+
+  <div class="projects-grid">
+    <!-- PROJECT 1: VESPER -->
+    <div class="project-card vesper-card">
+      <a href="work.html" class="vesper-link">
+        <span class="project-arrow">↗</span>
+        <p class="project-type">PERSONAL BUILD — 2026</p>
+        <h3 class="project-title"><em>Vesper</em> — Newsletter Intelligence Engine</h3>
+        <p class="project-desc">A custom-built productivity tool that pulls newsletters from Gmail, summarises them via the Anthropic API, and outputs structured digests — with a rule-based email triage engine built in. Designed, built, and used daily.</p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Flask</span>
+          <span class="tag">Anthropic API</span>
+          <span class="tag">Gmail API</span>
+        </div>
+      </a>
+
+      <!-- VESPER DIGEST AUDIO PLAYER -->
+      <div class="digest-player" id="digestPlayer">
+        <div class="digest-header">
+          <span class="digest-label">latest digest</span>
+          <span class="digest-date" id="digestDate">loading...</span>
+        </div>
+        <div class="digest-controls">
+          <button class="digest-play-btn" id="digestPlayBtn" aria-label="Play digest">
+            <svg class="icon-play" viewBox="0 0 24 24" width="16" height="16"><polygon points="6,3 20,12 6,21" fill="currentColor"/></svg>
+            <svg class="icon-pause" viewBox="0 0 24 24" width="16" height="16" style="display:none"><rect x="5" y="3" width="4" height="18" fill="currentColor"/><rect x="15" y="3" width="4" height="18" fill="currentColor"/></svg>
+          </button>
+          <div class="digest-track">
+            <div class="digest-progress" id="digestProgress"></div>
+          </div>
+          <span class="digest-time" id="digestTime">0:00</span>
+        </div>
+        <audio id="digestAudio" preload="metadata" src="vesper-digest.m4a"></audio>
+      </div>
+    </div>
+
+    <a href="work.html" class="project-card">
+      <span class="project-arrow">↗</span>
+      <p class="project-type">WEB — 2025</p>
+      <h3 class="project-title">This <em>Website</em></h3>
+      <p class="project-desc">A handbuilt portfolio with a Commodore-green soul — designed and coded from scratch. Classy meets whimsical meets "why does this glow so nicely."</p>
+      <div class="project-tags">
+        <span class="tag">HTML</span>
+        <span class="tag">CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Design</span>
+      </div>
+    </a>
+  </div>
+
+  <div class="view-all-wrap">
+    <a href="work.html" class="view-all">View all projects</a>
+  </div>
+</section>
+
+<!-- NAV CARDS -->
+<div class="nav-cards">
+  <a href="art.html" class="nav-card">
+    <p class="card-number">02 — STUDIO</p>
+    <h2 class="card-title">Art &amp;<br><em>Prints</em></h2>
+    <p class="card-desc">Original work available to own. Whimsical, considered, occasionally feral.</p>
+    <span class="card-tag">./browse-shop</span>
+    <span class="card-arrow">↗</span>
+  </a>
+  <a href="about.html" class="nav-card">
+    <p class="card-number">03 — HUMAN</p>
+    <h2 class="card-title">About<br><em>Rachel</em></h2>
+    <p class="card-desc">The person behind the pixels — curious, multidisciplinary, Edmonton-based.</p>
+    <span class="card-tag">./read-more</span>
+    <span class="card-arrow">↗</span>
+  </a>
+  <a href="mailto:castellettirachel@gmail.com" class="nav-card">
+    <p class="card-number">04 — CONNECT</p>
+    <h2 class="card-title">Hire &amp;<br><em>Collaborate</em></h2>
+    <p class="card-desc">Open to freelance, contract, and full-time opportunities. Let's talk.</p>
+    <span class="card-tag">./say-hello</span>
+    <span class="card-arrow">↗</span>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <a href="index.html" class="footer-logo">rachel.builds</a>
+    <span class="footer-sub">Creative Technologist — Edmonton, AB</span>
+  </div>
+
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/rachel-castelletti/" class="footer-link" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="mailto:castellettirachel@gmail.com" class="footer-link">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+      Email
+    </a>
+  </div>
+
+  <div class="footer-right">
+    <div>[system: ready]</div>
+    <div>© 2025 Rachel Builds</div>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   VESPER DIGEST AUDIO PLAYER
+   Custom player with play/pause, seekable progress bar,
+   and auto-detected "last updated" date from file headers.
+══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  const audio    = document.getElementById('digestAudio');
+  const playBtn  = document.getElementById('digestPlayBtn');
+  const progress = document.getElementById('digestProgress');
+  const track    = progress ? progress.parentElement : null;
+  const timeEl   = document.getElementById('digestTime');
+  const dateEl   = document.getElementById('digestDate');
+  const iconPlay = playBtn ? playBtn.querySelector('.icon-play') : null;
+  const iconPause = playBtn ? playBtn.querySelector('.icon-pause') : null;
+
+  if (!audio || !playBtn) return;
+
+  /* ── Format seconds as m:ss ─────────────────────────────── */
+  function fmt(s) {
+    if (!s || !isFinite(s)) return '0:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + (sec < 10 ? '0' : '') + sec;
+  }
+
+  /* ── Play / Pause toggle ────────────────────────────────── */
+  playBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    if (audio.paused) {
+      audio.play();
+      iconPlay.style.display = 'none';
+      iconPause.style.display = 'block';
+    } else {
+      audio.pause();
+      iconPlay.style.display = 'block';
+      iconPause.style.display = 'none';
+    }
+  });
+
+  audio.addEventListener('ended', function () {
+    iconPlay.style.display = 'block';
+    iconPause.style.display = 'none';
+    progress.style.width = '0%';
+  });
+
+  /* ── Progress bar update ────────────────────────────────── */
+  audio.addEventListener('timeupdate', function () {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = pct + '%';
+    timeEl.textContent = fmt(audio.currentTime);
+  });
+
+  audio.addEventListener('loadedmetadata', function () {
+    timeEl.textContent = fmt(audio.duration);
+  });
+
+  /* ── Click-to-seek on track ─────────────────────────────── */
+  if (track) {
+    track.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (!audio.duration) return;
+      const rect = track.getBoundingClientRect();
+      const pct  = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pct * audio.duration;
+    });
+  }
+
+  /* ── Fetch Last-Modified date from audio file ───────────── */
+  const dateOpts = { year: 'numeric', month: 'short', day: 'numeric' };
+
+  function showDate(d) {
+    dateEl.textContent = d.toLocaleDateString('en-CA', dateOpts);
+  }
+
+  if (window.location.protocol === 'file:') {
+    /* file:// can't do fetch — show today as a reasonable fallback */
+    showDate(new Date());
+  } else {
+    fetch('vesper-digest.m4a', { method: 'HEAD' })
+      .then(function (res) {
+        const lastMod = res.headers.get('Last-Modified');
+        showDate(lastMod ? new Date(lastMod) : new Date());
+      })
+      .catch(function () {
+        showDate(new Date());
+      });
+  }
+}());
+</script>
+
+<script>
+  const nameEl  = document.getElementById('heroName');
+  const wrapEl  = document.getElementById('typingWrap');
+  const textEl  = document.getElementById('typingText');
+  const ctaEl   = document.getElementById('heroCta');
+
+  const line1   = 'Rachel';
+  const line2   = 'Builds.';
+  const tagline = 'pixel lover, serial tinkerer, professional rabbit-hole diver';
+
+  function typeName(cb) {
+    const chars = [
+      ...line1.split('').map(c => ({ c, em: false })),
+      { c: 'BR', em: false },
+      ...line2.split('').map(c => ({ c, em: true }))
+    ];
+    let i = 0;
+    function tick() {
+      const chunk = chars.slice(0, i);
+      let l1 = '', l2 = '', inL2 = false;
+      chunk.forEach(o => {
+        if (o.c === 'BR') { inL2 = true; return; }
+        inL2 ? (l2 += o.c) : (l1 += o.c);
+      });
+      nameEl.innerHTML = l1 + (l2 ? '<br><em>' + l2 + '</em>' : '');
+      i++;
+      if (i <= chars.length) setTimeout(tick, i <= line1.length + 1 ? 85 : 72);
+      else if (cb) setTimeout(cb, 250);
+    }
+    tick();
+  }
+
+  function typeTagline(cb) {
+    wrapEl.style.visibility = 'visible';
+    let i = 0;
+    function tick() {
+      textEl.textContent = tagline.slice(0, i);
+      i++;
+      if (i <= tagline.length) setTimeout(tick, 26);
+      else if (cb) setTimeout(cb, 300);
+    }
+    tick();
+  }
+
+  setTimeout(() => {
+    typeName(() => {
+      typeTagline(() => {
+        ctaEl.style.animation = 'fadeUp 0.7s forwards';
+      });
+    });
+  }, 700);
+</script>
+
+<script>
+/* ══════════════════════════════════════════════════════════════
+   CARROT + BUNNY ANIMATION
+   An orange carrot slides in from the top-right and parks beside
+   the "Hire me" button. A purple bunny hops in from the right
+   and settles next to it, bouncing gently forever.
+   Sprites: 10×10 grid at S=2 → 20×20 px each (+25 % vs original)
+══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+
+  /* ── Canvas overlay ──────────────────────────────────────── */
+  const canvas = document.createElement('canvas');
+  canvas.id = 'rabbitCanvas';
+  Object.assign(canvas.style, {
+    position: 'absolute', top: '0', left: '0',
+    width: '100%', height: '100%',
+    pointerEvents: 'none', zIndex: '2',
+  });
+  hero.insertBefore(canvas, hero.firstChild);
+  const ctx = canvas.getContext('2d');
+
+  const S = 2;        /* canvas px per sprite pixel                  */
+  const G = 10;       /* sprite grid size (10 cols × 10 rows)        */
+  const W = G * S;    /* rendered width  = 20 px                     */
+  const H = G * S;    /* rendered height = 20 px                     */
+
+  /* ── Pixel-art sprites ───────────────────────────────────────
+     0 = transparent  1 = main body  2 = dark (eye)  3 = accent    */
+
+  /* Carrot: leaves top, pointy tip bottom                       */
+  const CARROT = [
+    [0,0,0,3,3,3,3,0,0,0],
+    [0,0,3,3,3,3,3,3,0,0],
+    [0,0,3,3,3,3,3,0,0,0],
+    [0,0,0,3,3,3,0,0,0,0],
+    [0,0,1,1,1,1,1,0,0,0],
+    [0,1,1,1,1,1,1,1,0,0],
+    [0,1,1,1,1,1,1,0,0,0],
+    [0,0,1,1,1,1,0,0,0,0],
+    [0,0,0,1,1,0,0,0,0,0],
+    [0,0,0,0,1,0,0,0,0,0],
+  ];
+
+  /* Bunny: front-facing, sitting, two upright ears              */
+  const BUNNY_SIT = [
+    [0,0,1,0,0,0,0,1,0,0],
+    [0,0,1,0,0,0,0,1,0,0],
+    [0,0,1,0,0,0,0,1,0,0],
+    [0,1,1,1,1,1,1,1,1,0],
+    [0,1,2,1,0,0,1,2,1,0],
+    [0,1,1,3,1,1,3,1,1,0],
+    [0,1,1,1,1,1,1,1,1,0],
+    [0,0,1,1,1,1,1,1,0,0],
+    [0,0,1,0,0,0,0,1,0,0],
+    [0,0,1,0,0,0,0,1,0,0],
+  ];
+
+  /* Bunny mid-hop: ears tucked, body compressed for jump arc    */
+  const BUNNY_HOP = [
+    [0,0,0,0,0,0,0,0,0,0],
+    [0,0,1,0,0,0,0,1,0,0],
+    [0,0,1,0,0,0,0,1,0,0],
+    [0,1,1,1,1,1,1,1,1,0],
+    [0,1,2,1,0,0,1,2,1,0],
+    [0,1,1,3,1,1,3,1,1,0],
+    [0,0,1,1,1,1,1,1,0,0],
+    [0,0,1,1,1,1,1,1,0,0],
+    [0,0,0,1,1,1,1,0,0,0],
+    [0,0,0,1,0,0,1,0,0,0],
+  ];
+
+  /* ── Colours ─────────────────────────────────────────────── */
+  const ORANGE  = '#ff8c00';
+  const LEAVES  = '#22cc44';
+  const PURPLE  = '#9933ff';
+  const PURP_DK = '#1a0033';
+  const PINK    = '#ff77bb';
+
+  /* ── Sprite renderer ─────────────────────────────────────── */
+  /* c1=body  c2=dark/eye  c3=accent                            */
+  function drawSpr(spr, x, y, c1, c2, c3) {
+    for (let r = 0; r < spr.length; r++)
+      for (let c = 0; c < spr[r].length; c++) {
+        const v = spr[r][c];
+        if (!v) continue;
+        const col = v === 1 ? c1 : v === 2 ? c2 : c3;
+        if (!col) continue;
+        ctx.fillStyle = col;
+        ctx.fillRect(x + c * S, y + r * S, S, S);
+      }
+  }
+
+  /* ── State ───────────────────────────────────────────────── */
+  let cw, ch, frame = 0;
+  let destX = 0, destY = 0;   /* carrot resting position              */
+  let carrotArriveFrame = Infinity;
+
+  const carrot = { x: 0, y: 0, startX: 0, startY: 0, t: 0,
+                   phase: 'waiting' /* waiting|sliding|resting */      };
+
+  const bunny  = { x: 0, y: 0, startX: 0, targetX: 0, targetY: 0,
+                   t: 0, bounceT: 0,
+                   phase: 'waiting' /* waiting|hopping|settled */      };
+
+  /* Frames from loop-start before carrot slides in.
+     ~3.5 s gives typing animation time to finish + layout to settle.  */
+  const CARROT_DELAY  = 210;
+  const CARROT_FRAMES = 90;   /* frames for carrot slide (≈1.5 s)     */
+  const BUNNY_WAIT    = 45;   /* frames after carrot lands             */
+  const BUNNY_FRAMES  = 80;   /* frames for bunny hop-in (≈1.3 s)     */
+
+  /* ── Destination: right of "Hire me", vertically centred ─── */
+  function getDestination() {
+    const btn = document.querySelector('.btn-ghost');
+    if (!btn) return { x: cw * 0.42, y: ch * 0.74 };
+    const hr = hero.getBoundingClientRect();
+    const br = btn.getBoundingClientRect();
+    return {
+      x: br.right  - hr.left + 12,
+      y: br.top    - hr.top  + (br.height - H) / 2,
+    };
+  }
+
+  /* ── Resize ──────────────────────────────────────────────── */
+  function resize() {
+    cw = canvas.width  = hero.offsetWidth;
+    ch = canvas.height = hero.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  /* ── Easing helpers ──────────────────────────────────────── */
+  function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+  function easeOutQuad(t)  { return 1 - Math.pow(1 - t, 2); }
+
+  /* ── Main loop ───────────────────────────────────────────── */
+  function loop() {
+    ctx.clearRect(0, 0, cw, ch);
+    frame++;
+
+    /* ── Carrot: initialise slide once layout is stable ── */
+    if (carrot.phase === 'waiting' && frame === CARROT_DELAY) {
+      const dest = getDestination();
+      destX = dest.x;
+      destY = dest.y;
+
+      carrot.startX = cw + W + 4;   /* off right edge  */
+      carrot.startY = -(H + 8);     /* off top edge    */
+      carrot.x = carrot.startX;
+      carrot.y = carrot.startY;
+      carrot.t = 0;
+      carrot.phase = 'sliding';
+
+      /* Bunny will land one sprite-width to the right of carrot */
+      bunny.targetX = destX + W + 8;
+      bunny.targetY = destY;
+      bunny.startX  = cw + W + 4;
+      bunny.x       = bunny.startX;
+      bunny.y       = bunny.targetY;
+    }
+
+    if (carrot.phase === 'sliding') {
+      carrot.t++;
+      const e  = easeOutCubic(Math.min(carrot.t / CARROT_FRAMES, 1));
+      carrot.x = carrot.startX + (destX - carrot.startX) * e;
+      carrot.y = carrot.startY + (destY - carrot.startY) * e;
+      if (carrot.t >= CARROT_FRAMES) {
+        carrot.x = destX; carrot.y = destY;
+        carrot.phase = 'resting';
+        carrotArriveFrame = frame;
+      }
+    }
+
+    /* ── Bunny: starts hopping after carrot lands ── */
+    if (bunny.phase === 'waiting' &&
+        frame >= carrotArriveFrame + BUNNY_WAIT) {
+      bunny.phase = 'hopping';
+      bunny.t = 0;
+    }
+
+    if (bunny.phase === 'hopping') {
+      bunny.t++;
+      const t  = Math.min(bunny.t / BUNNY_FRAMES, 1);
+      const e  = easeOutQuad(t);
+      bunny.x  = bunny.startX + (bunny.targetX - bunny.startX) * e;
+      /* Two arcing hops across the screen */
+      bunny.y  = bunny.targetY - Math.abs(Math.sin(t * Math.PI * 2)) * 16;
+      if (bunny.t >= BUNNY_FRAMES) {
+        bunny.x = bunny.targetX; bunny.y = bunny.targetY;
+        bunny.phase = 'settled'; bunny.bounceT = 0;
+      }
+    }
+
+    if (bunny.phase === 'settled') bunny.bounceT++;
+
+    /* ── Draw carrot ── */
+    if (carrot.phase !== 'waiting') {
+      ctx.save();
+      ctx.shadowBlur = 10; ctx.shadowColor = ORANGE;
+      drawSpr(CARROT, Math.round(carrot.x), Math.round(carrot.y),
+              ORANGE, null, LEAVES);
+      ctx.restore();
+    }
+
+    /* ── Draw bunny ── */
+    if (bunny.phase !== 'waiting') {
+      const airborne = bunny.y < bunny.targetY - 3;
+      const spr      = airborne ? BUNNY_HOP : BUNNY_SIT;
+      const byOff    = bunny.phase === 'settled'
+        ? Math.round(Math.sin(bunny.bounceT * 0.13) * 2.5) : 0;
+      ctx.save();
+      ctx.shadowBlur = 12; ctx.shadowColor = PURPLE;
+      drawSpr(spr, Math.round(bunny.x), Math.round(bunny.y + byOff),
+              PURPLE, PURP_DK, PINK);
+      ctx.restore();
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  /* Start 0.5 s after page load so the hero is painted first   */
+  setTimeout(() => requestAnimationFrame(loop), 500);
+}());
+</script>
+
+<script src="main.js"></script>
+</body>
+</html>

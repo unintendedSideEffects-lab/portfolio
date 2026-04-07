@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work — Rachel Builds</title>
+<meta name="description" content="Professional case studies and work samples — Rachel Builds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* === WORK-SPECIFIC === */
+
+  /* Gate overlay */
+  #gate {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+
+  #gate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(57,255,110,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(57,255,110,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 20%, transparent 80%);
+  }
+
+  .gate-box {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid var(--green-border);
+    background: var(--bg2);
+    padding: 3rem 3rem 2.5rem;
+  }
+
+  .gate-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    box-shadow: 0 0 20px rgba(57,255,110,0.5);
+  }
+
+  .gate-lock {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--green);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .gate-lock::before {
+    content: '// ';
+    color: var(--green-dim);
+  }
+
+  .gate-lock-icon {
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid var(--green);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 10px rgba(57,255,110,0.2);
+  }
+
+  .gate-lock-icon svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--green);
+  }
+
+  .gate-heading {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(2.2rem, 5.5vw, 3.3rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+
+  .gate-heading em {
+    font-style: italic;
+    color: var(--green);
+    text-shadow: 0 0 30px rgba(57,255,110,0.3);
+  }
+
+  .gate-sub {
+    font-family: var(--sans);
+    font-weight: 100;
+    font-size: 0.92rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.08em;
+    line-height: 1.8;
+    margin-bottom: 2.2rem;
+  }
+
+  .gate-input-wrap {
+    position: relative;
+    margin-bottom: 0.8rem;
+  }
+
+  .gate-input-wrap::before {
+    content: '> ';
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    color: var(--green-dim);
+    pointer-events: none;
+  }
+
+  #gateInput {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--green-border);
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    padding: 0.85rem 1rem 0.85rem 2.5rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -webkit-text-security: disc;
+    text-security: disc;
+  }
+
+  #gateInput[type="password"] {
+    -webkit-text-security: disc;
+  }
+
+  #gateInput:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 16px rgba(57,255,110,0.15);
+  }
+
+  #gateInput.shake {
+    animation: shake 0.4s ease;
+    border-color: #ff4444;
+    box-shadow: 0 0 16px rgba(255,68,68,0.2);
+  }
+
+  #gateError {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: #ff4444;
+    letter-spacing: 0.12em;
+    min-height: 1.2em;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  #gateError.visible { opacity: 1; }
+
+  .gate-btn {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.9rem 2rem;
+    border: 1px solid var(--green);
+    color: var(--bg);
+    background: var(--green);
+    cursor: pointer;
+    transition: all 0.22s;
+    box-shadow: 0 0 20px rgba(57,255,110,0.22);
+  }
+
+  .gate-btn:hover {
+    background: transparent;
+    color: var(--green);
+    box-shadow: 0 0 32px rgba(57,255,110,0.4);
+  }
+
+  .gate-note {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    letter-spacing: 0.1em;
+    text-align: center;
+    margin-top: 1.6rem;
+    line-height: 1.6;
+  }
+
+  .gate-note a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    border-bottom: 1px solid var(--green-border);
+    transition: color 0.2s;
+  }
+
+  .gate-note a:hover { color: var(--green); }
+
+  #gate.unlocking {
+    animation: fadeOut 0.5s 0.1s forwards;
+  }
+
+  /* Main content (hidden until unlocked) */
+  #content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  #content.visible {
+    display: block;
+    opacity: 1;
+  }
+
+  /* Access badge */
+  .access-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid var(--green-border);
+    padding: 0.3rem 0.7rem;
+    background: var(--green-faint);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.05s forwards;
+  }
+
+  .access-badge::before {
+    content: '●';
+    font-size: 0.5rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* Override page-eyebrow animation delay for work page */
+  .page-eyebrow {
+    animation-delay: 0.2s;
+  }
+
+  .page-title {
+    animation-delay: 0.3s;
+  }
+
+  .page-subtitle {
+    animation-delay: 0.45s;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    padding: 1.5rem 4rem;
+    border-bottom: 1px solid var(--green-border);
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    background: var(--bg2);
+  }
+
+  .filter-label {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    letter-spacing: 0.2em;
+    margin-right: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.15em;
+    color: var(--ink-dim);
+    background: none;
+    border: 1px solid var(--green-border);
+    padding: 0.3rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    color: var(--green);
+    border-color: var(--green);
+    background: var(--green-faint);
+  }
+
+  /* Projects section */
+  .projects-section {
+    padding: 5rem 4rem;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--green-border);
+  }
+
+  .project-card {
+    display: block;
+    background: var(--bg);
+    padding: 3rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s;
+    position: relative;
+    cursor: default;
+  }
+
+  .project-card.has-link {
+    cursor: pointer;
+  }
+
+  .project-card:hover { background: var(--bg2); }
+
+  .project-card.has-link:hover .project-arrow {
+    opacity: 1;
+    transform: translate(2px, -2px);
+  }
+
+  .project-arrow {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    font-size: 1.22rem;
+    color: var(--green);
+    opacity: 0;
+    transition: all 0.2s;
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-type {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green);
+    letter-spacing: 0.25em;
+  }
+
+  .project-year {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.15em;
+  }
+
+  .project-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.55rem, 2.7vw, 2.2rem);
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 1.2rem;
+  }
+
+  .project-title em {
+    font-style: italic;
+    color: var(--green);
+  }
+
+  .project-desc {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 1.12rem;
+    color: var(--ink-dim);
+    line-height: 1.75;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Outcome blocks */
+  .outcome-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .outcome-item {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .outcome-item::before {
+    content: '→';
+    color: var(--green);
+    flex-shrink: 0;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* Work page tag override */
+  .tag {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    color: var(--ink-dim);
+    border: 1px solid var(--green-border);
+    padding: 0.25rem 0.6rem;
+    text-transform: uppercase;
+    background: transparent;
+  }
+
+  /* Full-width card */
+  .project-card.full-width {
+    grid-column: 1 / -1;
+    background: var(--bg3);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+
+  /* Stat row */
+  .stat-row {
+    display: flex;
+    gap: 2.5rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .stat-value {
+    font-family: var(--mono);
+    font-size: clamp(1.55rem, 2.2vw, 2.2rem);
+    color: var(--green);
+    text-shadow: 0 0 20px rgba(57,255,110,0.25);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-label {
+    font-family: var(--sans);
+    font-weight: 100;
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Context strip */
+  .context-strip {
+    background: var(--bg3);
+    border-top: 1px solid var(--green-border);
+    border-bottom: 1px solid var(--green-border);
+    padding: 2rem 4rem;
+    display: flex;
+    gap: 4rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .context-key {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .context-val {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* More note */
+  .more-note {
+    padding: 4rem;
+    border-top: 1px solid var(--green-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    background: var(--bg2);
+  }
+
+  .more-note-text {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.12rem, 1.6vw, 1.34rem);
+    color: var(--ink-dim);
+    line-height: 1.7;
+    max-width: 55ch;
+  }
+
+  .more-note-text em {
+    font-style: italic;
+    color: var(--ink);
+  }
+
+  .btn-outline {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--green-border);
+    color: var(--green);
+    background: transparent;
+    transition: all 0.22s;
+    white-space: nowrap;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--green);
+    background: var(--green-faint);
+    box-shadow: 0 0 20px rgba(57,255,110,0.15);
+  }
+
+  /* Work-specific footer override */
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5rem 4rem;
+    border-top: 1px solid var(--green-border);
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .footer-left { gap: 0.3rem; }
+
+  .footer-logo { letter-spacing: 0.04em; }
+
+  .footer-sub { text-transform: uppercase; }
+
+  .footer-links { gap: 1.5rem; }
+
+  /* Work keyframes */
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to   { opacity: 0; pointer-events: none; }
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%     { transform: translateX(-8px); }
+    40%     { transform: translateX(8px); }
+    60%     { transform: translateX(-5px); }
+    80%     { transform: translateX(5px); }
+  }
+
+  /* Work responsive */
+  @media (max-width: 900px) {
+    .filter-bar { padding: 1.2rem 1.5rem; }
+    .projects-section { padding: 3rem 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card { padding: 2.2rem 1.5rem; }
+    .project-card.full-width { grid-template-columns: 1fr; gap: 2rem; }
+    .context-strip { padding: 2rem 1.5rem; gap: 2rem; }
+    .more-note { padding: 3rem 1.5rem; }
+    .gate-box { padding: 2.5rem 1.5rem 2rem; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">rachel<span>.</span>builds<span class="nav-cursor"></span></a>
+  <ul class="nav-links">
+    <li><a href="work.html" class="active">Work</a></li>
+    <li><a href="art.html">Art</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="mailto:castellettirachel@gmail.com" class="nav-contact-link">castellettirachel@gmail.com</a></li>
+  </ul>
+</nav>
+
+<!-- ====================================================
+     GATE OVERLAY
+===================================================== -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-lock">
+      <span class="gate-lock-icon">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+        </svg>
+      </span>
+      restricted access
+    </div>
+
+    <h1 class="gate-heading">Professional<br><em>Work</em></h1>
+
+    <p class="gate-sub">
+      This section contains professional case studies, reporting samples, and program work. Some content is confidential — access is by invitation.
+    </p>
+
+    <div class="gate-input-wrap">
+      <input
+        type="password"
+        id="gateInput"
+        placeholder="enter passphrase"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+
+    <div id="gateError">// incorrect passphrase — try again</div>
+
+    <button class="gate-btn" onclick="checkGate()">Unlock →</button>
+
+    <p class="gate-note">
+      Don't have access?<br>
+      <a href="mailto:castellettirachel@gmail.com">castellettirachel@gmail.com</a> — I'd love to connect.
+    </p>
+  </div>
+</div>
+
+<!-- ====================================================
+     MAIN CONTENT
+===================================================== -->
+<div id="content">
+
+  <!-- PAGE HEADER -->
+  <header class="page-header">
+    <div class="access-badge">Access Granted</div>
+    <p class="page-eyebrow">01 — work</p>
+    <h1 class="page-title">Selected<br><em>Case Studies</em></h1>
+    <p class="page-subtitle">Professional work spanning program management, data systems, and creative technology. Some details have been generalized to respect organizational confidentiality.</p>
+  </header>
+
+  <!-- CONTEXT STRIP -->
+  <div class="context-strip">
+    <div class="context-item">
+      <p class="context-key">Current Role</p>
+      <p class="context-val">Independent Consultant</p>
+    </div>
+    <div class="context-item">
+      <p class="context-key">Focus</p>
+      <p class="context-val">Program Management · Data Systems · Creative Technology</p>
+    </div>
+    <div class="context-item">
+      <p class="context-key">Based In</p>
+      <p class="context-val">Edmonton, AB — Treaty 6 Territory</p>
+    </div>
+    <div class="context-item">
+      <p class="context-key">Availability</p>
+      <p class="context-val">Open to contract &amp; full-time opportunities</p>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar">
+    <span class="filter-label">// filter:</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="data">Data Systems</button>
+    <button class="filter-btn" data-filter="program">Program Management</button>
+    <button class="filter-btn" data-filter="web">Web &amp; Tech</button>
+  </div>
+
+  <!-- PROJECTS GRID -->
+  <section class="projects-section">
+    <div class="projects-grid">
+
+      <!-- PROJECT 1: VESPER -->
+      <div class="project-card" data-category="web">
+        <div class="project-meta">
+          <span class="project-type">PERSONAL BUILD</span>
+          <span class="project-year">2026 · ACTIVELY DEVELOPED</span>
+        </div>
+        <h2 class="project-title"><em>Vesper</em> — Newsletter Intelligence Engine</h2>
+        <p class="project-desc">
+          A personal productivity tool that pulls newsletters from Gmail, summarises them via the Anthropic API, and outputs structured digests formatted for NotebookLM's two-host podcast feature. Includes Ember, a rule-based email triage engine with AI-assisted classification for ambiguous messages. Designed, built, and used daily.
+        </p>
+
+        <div class="outcome-list">
+          <div class="outcome-item">End-to-end design from concept to daily personal use — built in a single session</div>
+          <div class="outcome-item">Real-time streaming UI with a custom dark liminal aesthetic</div>
+          <div class="outcome-item">Hybrid triage system: 8-rule chain with Claude Haiku fallback for edge cases</div>
+          <div class="outcome-item">API cost optimised to under $1/month at daily use</div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <div class="stat-value">< $1</div>
+            <div class="stat-label">Monthly API cost</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">3</div>
+            <div class="stat-label">Digest templates</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">8</div>
+            <div class="stat-label">Triage rules</div>
+          </div>
+        </div>
+
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Flask</span>
+          <span class="tag">Gmail API</span>
+          <span class="tag">Anthropic API</span>
+          <span class="tag">Prompt Engineering</span>
+          <span class="tag">UI Design</span>
+        </div>
+      </div>
+
+      <!-- PROJECT 2: QUARTERLY FUNDING PERFORMANCE REPORTING -->
+      <div class="project-card" data-category="data">
+        <div class="project-meta">
+          <span class="project-type">DATA SYSTEMS</span>
+          <span class="project-year">2025 · AIIC</span>
+        </div>
+        <h2 class="project-title">Quarterly Funding <em>Performance</em> Reporting</h2>
+        <p class="project-desc">
+          Designed and built a multi-variable Excel reporting system consolidating five lending programs into a single dashboard — with year-over-year analysis, automated calculations, and audit-ready quarterly outputs for a multi-million-dollar Indigenous loan portfolio.
+        </p>
+
+        <div class="outcome-list">
+          <div class="outcome-item">Consolidated SEAP, Term Loans, WELF, IWE, and IYE programs into one reporting tool</div>
+          <div class="outcome-item">Saved 4–6 hours monthly by eliminating manual data compilation and formatting</div>
+          <div class="outcome-item">Built automated rollups from quarterly data tabs to a year-to-date dashboard</div>
+          <div class="outcome-item">Included delinquency rate calculations, unique client counting, and error-handled percentage change formulas</div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <div class="stat-value">5</div>
+            <div class="stat-label">Programs consolidated</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4–6 hrs</div>
+            <div class="stat-label">Saved monthly</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Audit-ready</div>
+          </div>
+        </div>
+
+        <div class="project-tags">
+          <span class="tag">Excel</span>
+          <span class="tag">Advanced Formulas</span>
+          <span class="tag">Data Validation</span>
+          <span class="tag">Dashboard Design</span>
+          <span class="tag">Financial Reporting</span>
+        </div>
+      </div>
+
+      <!-- PROJECT 3: MEAP FEDERAL GRANT ADMINISTRATION -->
+      <div class="project-card" data-category="program">
+        <div class="project-meta">
+          <span class="project-type">PROGRAM MANAGEMENT</span>
+          <span class="project-year">2017–2021 · APEETOGOSAN</span>
+        </div>
+        <h2 class="project-title">Métis Entrepreneur <em>Assistance</em> Program</h2>
+        <p class="project-desc">
+          Sole administrator of a federally-funded grant program supporting Métis entrepreneurs across Western Canada — managing the full lifecycle from application intake through disbursement, compliance reporting, and stakeholder coordination over five years.
+        </p>
+
+        <div class="outcome-list">
+          <div class="outcome-item">Administered ~$1.4M in annual funding with zero compliance issues across all reporting periods</div>
+          <div class="outcome-item">Processed close to $10M in total federal funding over the program's lifetime</div>
+          <div class="outcome-item">Built reporting frameworks from scratch for monthly, quarterly, and annual Government of Canada deliverables</div>
+          <div class="outcome-item">Reviewed hundreds of applications against federal eligibility criteria, including business plans and financials</div>
+          <div class="outcome-item">Supervised and mentored a junior team member on task execution and program processes</div>
+        </div>
+
+        <div class="stat-row">
+          <div class="stat-item">
+            <div class="stat-value">~$10M</div>
+            <div class="stat-label">Total funding managed</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">5 yrs</div>
+            <div class="stat-label">Zero compliance issues</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Federal compliance</div>
+          </div>
+        </div>
+
+        <div class="project-tags">
+          <span class="tag">Federal Grant Admin</span>
+          <span class="tag">Compliance Reporting</span>
+          <span class="tag">Application Review</span>
+          <span class="tag">Stakeholder Relations</span>
+          <span class="tag">Process Design</span>
+        </div>
+      </div>
+
+      <!-- PROJECT 4: FINANCIAL DATA RECONCILIATION -->
+      <div class="project-card" data-category="data">
+        <div class="project-meta">
+          <span class="project-type">DATA SYSTEMS</span>
+          <span class="project-year">2025</span>
+        </div>
+        <h2 class="project-title">Financial Data <em>Reconciliation</em></h2>
+        <p class="project-desc">
+          Conducted a self-initiated reconciliation of a lending portfolio within a loan management system — cross-referencing reported balances against source records to identify systematic data entry discrepancies, and delivering documented findings to Finance ahead of year-end audit.
+        </p>
+
+        <div class="outcome-list">
+          <div class="outcome-item">Identified significant portfolio overstatement through line-by-line variance analysis</div>
+          <div class="outcome-item">Flagged discrepancies across nearly half of the active term loan portfolio before external audit</div>
+          <div class="outcome-item">Produced detailed variance documentation enabling Finance to action corrections</div>
+          <div class="outcome-item">Supported implementation of credit bureau reporting integration for ongoing portfolio compliance</div>
+        </div>
+
+        <div class="project-tags">
+          <span class="tag">Financial Analysis</span>
+          <span class="tag">Data Reconciliation</span>
+          <span class="tag">Variance Analysis</span>
+          <span class="tag">Compliance</span>
+          <span class="tag">Quality Assurance</span>
+        </div>
+      </div>
+
+      <!-- PROJECT 5: SEAP CLIENT & CASH TRACKING -->
+      <div class="project-card" data-category="data">
+        <div class="project-meta">
+          <span class="project-type">DATA SYSTEMS</span>
+          <span class="project-year">2025 · AIIC</span>
+        </div>
+        <h2 class="project-title">SEAP Client &amp; Cash <em>Tracking</em> System</h2>
+        <p class="project-desc">
+          Replaced manual tracking methods for the Status Entrepreneur Assistance Program with a structured Excel system — managing the full application lifecycle from intake through disbursement, with automated balance calculations and status workflow tracking.
+        </p>
+
+        <div class="outcome-list">
+          <div class="outcome-item">Built comprehensive client tracking with file numbers, project types, funding amounts, and status fields</div>
+          <div class="outcome-item">Designed a status workflow pipeline: Pending → Screened-In → Approved → Disbursed</div>
+          <div class="outcome-item">Automated remaining balance calculations and fund allocation tracking</div>
+          <div class="outcome-item">Created a SEAP Stats reporting tab with summary tables for leadership review</div>
+          <div class="outcome-item">Wrote a 4-page user guide covering data entry, status updates, and common mistakes</div>
+        </div>
+
+        <div class="project-tags">
+          <span class="tag">Excel</span>
+          <span class="tag">Pivot Tables</span>
+          <span class="tag">Process Design</span>
+          <span class="tag">User Documentation</span>
+          <span class="tag">Data Validation</span>
+        </div>
+      </div>
+
+      <!-- PROJECT 6: THIS WEBSITE (FULL WIDTH) -->
+      <div class="project-card full-width has-link" data-category="web" onclick="window.location='/'">
+        <span class="project-arrow">↗</span>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-type">WEB</span>
+            <span class="project-year">2025</span>
+          </div>
+          <h2 class="project-title">This <em>Website</em></h2>
+          <p class="project-desc">
+            Designed and hand-coded from scratch — a portfolio with a Commodore-green soul. Every pixel, animation, and line of CSS is original. Built without frameworks or templates.
+          </p>
+
+          <div class="outcome-list">
+            <div class="outcome-item">Full custom design system: typography scale, color tokens, animation library</div>
+            <div class="outcome-item">Password-protected work section with client-side SHA-256 auth</div>
+            <div class="outcome-item">Responsive across mobile, tablet, and desktop</div>
+            <div class="outcome-item">Zero dependencies — pure HTML, CSS, and vanilla JS</div>
+          </div>
+        </div>
+
+        <div class="project-side">
+          <div class="stat-row" style="flex-direction: column; gap: 1.8rem;">
+            <div class="stat-item">
+              <div class="stat-value">0</div>
+              <div class="stat-label">Frameworks used</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">100%</div>
+              <div class="stat-label">Custom-built</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-value">∞</div>
+              <div class="stat-label">Glow effects</div>
+            </div>
+          </div>
+
+          <div class="project-tags" style="margin-top: 1.5rem;">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Design</span>
+            <span class="tag">Typography</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- MORE NOTE -->
+  <div class="more-note">
+    <p class="more-note-text">
+      These are representative samples. More detailed case studies, reporting artefacts, and process documentation are available <em>on request</em> — including work I can't publish publicly due to confidentiality.
+    </p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="Rachel_Castelletti_Portfolio_Resume.pdf" class="btn-outline" download>Download résumé →</a>
+      <a href="mailto:castellettirachel@gmail.com" class="btn-outline">Get in touch →</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      <a href="index.html" class="footer-logo">rachel.builds</a>
+      <span class="footer-sub">Creative Technologist — Edmonton, AB</span>
+    </div>
+
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/rachel-castelletti/" class="footer-link" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:castellettirachel@gmail.com" class="footer-link">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+        Email
+      </a>
+    </div>
+
+    <div class="footer-right">
+      <a href="index.html" class="footer-logo">rachel.builds</a> — 2025<br>
+      amiskwaciy-wâskahikan · Treaty 6
+    </div>
+  </footer>
+
+</div><!-- /#content -->
+
+<script src="main.js"></script>
+
+<script>
+  // PASSWORD GATE
+  const CORRECT_HASH = '7367c98b14b9b37fcf0dd9bd6eb45e8671bed22fe70f085013ecae052eea27a4';
+  const SESSION_KEY = 'rb_work_access';
+
+  async function hashString(str) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(str);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function checkGate() {
+    const input = document.getElementById('gateInput').value.trim();
+    if (!input) return;
+
+    const hash = await hashString(input);
+
+    if (hash === CORRECT_HASH) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      unlockContent();
+    } else {
+      const field = document.getElementById('gateInput');
+      const err   = document.getElementById('gateError');
+      field.classList.remove('shake');
+      void field.offsetWidth; // reflow to restart animation
+      field.classList.add('shake');
+      err.classList.add('visible');
+      field.value = '';
+      setTimeout(() => field.classList.remove('shake'), 400);
+    }
+  }
+
+  function unlockContent() {
+    const gate    = document.getElementById('gate');
+    const content = document.getElementById('content');
+    gate.classList.add('unlocking');
+    setTimeout(() => {
+      gate.style.display = 'none';
+      content.style.display = 'block';
+      requestAnimationFrame(() => {
+        content.style.opacity = '1';
+        content.classList.add('visible');
+      });
+    }, 600);
+  }
+
+  // Allow Enter key in the password field
+  document.getElementById('gateInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkGate();
+  });
+
+  // Clear error on new input
+  document.getElementById('gateInput').addEventListener('input', () => {
+    document.getElementById('gateError').classList.remove('visible');
+  });
+
+  // Check if already unlocked this session
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    document.getElementById('gate').style.display = 'none';
+    const content = document.getElementById('content');
+    content.style.display = 'block';
+    content.style.opacity = '1';
+    content.classList.add('visible');
+  }
+
+  // ============================================================
+  // FILTER
+  // ============================================================
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.project-card').forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Rachel Builds</title>
+<meta name="description" content="About Rachel — Indigenous creative technologist, program manager, and data analyst based in Edmonton, AB.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* === ABOUT-SPECIFIC === */
+
+  /* Content layout */
+  .about-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--green-border);
+    border-bottom: 1px solid var(--green-border);
+  }
+
+  .about-col {
+    background: var(--bg);
+    padding: 4rem;
+  }
+
+  .about-col--right {
+    background: var(--bg2);
+  }
+
+  /* Prose */
+  .prose {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.12rem, 1.5vw, 1.28rem);
+    color: var(--ink);
+    line-height: 1.85;
+  }
+
+  .prose + .prose { margin-top: 1.4rem; }
+
+  .prose em {
+    font-style: italic;
+    color: var(--green);
+  }
+
+  .prose strong {
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  /* Stat blocks */
+  .stat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .stat-value {
+    font-family: var(--mono);
+    font-size: clamp(2rem, 3.3vw, 2.9rem);
+    color: var(--green);
+    text-shadow: 0 0 24px rgba(57,255,110,0.3);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+
+  .stat-label {
+    font-family: var(--sans);
+    font-weight: 100;
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .stat-value--lg {
+    font-size: clamp(2.5rem, 4.1vw, 3.625rem);
+  }
+
+  .stat-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--green-border);
+    margin-top: 2rem;
+  }
+
+  /* Skills grid */
+  .skills-section {
+    padding: 4rem;
+    border-bottom: 1px solid var(--green-border);
+  }
+
+  .skills-heading {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(1.78rem, 3.3vw, 2.7rem);
+    color: var(--ink);
+    margin-bottom: 2.5rem;
+    line-height: 1.1;
+  }
+
+  .skills-heading em { font-style: italic; color: var(--green); }
+
+  .skills-categories {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .skill-category-name {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green-dim);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--green-border);
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  /* About responsive */
+  @media (max-width: 900px) {
+    .about-body { grid-template-columns: 1fr; }
+    .about-col { padding: 2.5rem 1.5rem; }
+    .skills-section { padding: 2.5rem 1.5rem; }
+    .skills-categories { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  }
+
+  @media (max-width: 600px) {
+    .skills-categories { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">rachel<span>.</span>builds<span class="nav-cursor"></span></a>
+  <ul class="nav-links">
+    <li><a href="work.html">Work</a></li>
+    <li><a href="art.html">Art</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="mailto:castellettirachel@gmail.com" class="nav-contact-link">castellettirachel@gmail.com</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <p class="page-eyebrow">03 — human</p>
+  <h1 class="page-title">About<br><em>Rachel</em></h1>
+  <p class="page-subtitle">Creative technologist, program strategist, and lifelong <span id="tinkerer-anchor">tinkerer.</span> Edmonton-based. Roots go deep.</p>
+</header>
+
+<!-- MAIN ABOUT BODY -->
+<div class="about-body">
+
+  <!-- LEFT COL: WHO I AM -->
+  <div class="about-col">
+    <p class="section-label">who I am</p>
+
+    <p class="prose">
+      I'm an Indigenous woman building things at the intersection of data, systems, and people. My work lives in the space where <em>community meets strategy</em> — where a well-built spreadsheet can change how a program serves people, and where thoughtful design can make complex information feel human.
+    </p>
+
+    <p class="prose">
+      I've spent years in Indigenous economic development — administering federal grant programs, building reporting systems for multi-million-dollar loan portfolios, and turning raw data into stories that matter to funders, partners, and the communities being served. Now I bring that same <em>precision and care</em> to everything I build.
+    </p>
+
+    <p class="prose">
+      I also build things for the joy of it — websites, automations, AI-powered tools, art. If something I need doesn't exist yet, I'll <em>make it myself</em>.
+    </p>
+
+    <p class="prose">
+      I'm based in <em>amiskwaciy-wâskahikan</em> — what settlers call Edmonton — on Treaty 6 territory.
+    </p>
+  </div>
+
+  <!-- RIGHT COL: QUICK STATS -->
+  <div class="about-col about-col--right">
+    <p class="section-label">by the numbers</p>
+
+    <div class="stat-list">
+      <div class="stat-item">
+        <div class="stat-value">5+</div>
+        <div class="stat-label">Years in program management &amp; coordination</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value">~$10M</div>
+        <div class="stat-label">In federal funding administered with zero compliance issues</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value">4.0</div>
+        <div class="stat-label">GPA — IT Business Analysis diploma</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-value stat-value--lg">∞</div>
+        <div class="stat-label">Tabs open at any given time</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SKILLS SECTION -->
+<section class="skills-section">
+  <p class="section-label">toolkit</p>
+  <h2 class="skills-heading">What I <em>Work With</em></h2>
+
+  <div class="skills-categories">
+
+    <div class="skill-category">
+      <p class="skill-category-name">Data &amp; Analysis</p>
+      <div class="skill-tags">
+        <span class="tag">Excel</span>
+        <span class="tag">Power Query</span>
+        <span class="tag">Pivot Tables</span>
+        <span class="tag">Data Viz</span>
+        <span class="tag">Reporting Systems</span>
+        <span class="tag">Python</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <p class="skill-category-name">Programs &amp; Strategy</p>
+      <div class="skill-tags">
+        <span class="tag">Program Management</span>
+        <span class="tag">Stakeholder Relations</span>
+        <span class="tag">Grant Reporting</span>
+        <span class="tag">Partnership Development</span>
+        <span class="tag">Process Design</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <p class="skill-category-name">Building &amp; Making</p>
+      <div class="skill-tags">
+        <span class="tag">HTML / CSS / JS</span>
+        <span class="tag">Flask / Python Apps</span>
+        <span class="tag">Dashboard Building</span>
+        <span class="tag">Business Analysis</span>
+        <span class="tag">Creative Technology</span>
+        <span class="tag">Digital Art</span>
+      </div>
+    </div>
+
+    <div class="skill-category">
+      <p class="skill-category-name">AI &amp; Automation</p>
+      <div class="skill-tags">
+        <span class="tag">Claude / Cowork</span>
+        <span class="tag">Anthropic API</span>
+        <span class="tag">Local LLMs</span>
+        <span class="tag">Prompt Engineering</span>
+        <span class="tag">Gmail API</span>
+        <span class="tag">Workflow Automation</span>
+        <span class="tag">AI Training &amp; Adoption</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PHILOSOPHY STRIP -->
+<div class="philosophy-strip">
+  <div class="philosophy-glyph">"</div>
+  <p class="philosophy-text">
+    I believe the best tools are the ones that make someone's job feel <em>easier</em> — and the best programs are the ones that actually reach the people they were built for.
+  </p>
+</div>
+
+<!-- CTA ROW -->
+<div class="cta-row">
+  <p class="cta-text">Want to build something <em>together?</em></p>
+  <div class="cta-buttons">
+    <a href="work.html" class="btn-ghost">View my work</a>
+    <a href="mailto:castellettirachel@gmail.com" class="btn-primary">Get in touch</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <a href="index.html" class="footer-logo">rachel.builds</a>
+    <span class="footer-sub">Creative Technologist — Edmonton, AB</span>
+  </div>
+
+  <div class="footer-links">
+    <a href="https://www.linkedin.com/in/rachel-castelletti/" class="footer-link" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 23.2 24 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="mailto:castellettirachel@gmail.com" class="footer-link">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+      Email
+    </a>
+  </div>
+
+  <div class="footer-right">
+    <div>[system: ready]</div>
+    <div>© 2025 Rachel Builds</div>
+  </div>
+</footer>
+
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   ABOUT PAGE RABBIT
+   Purple pixel rabbit drops in from above and lands next to
+   a glowing pixel carrot placed at the end of the word "tinkerer."
+═══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  const anchor = document.getElementById('tinkerer-anchor');
+  if (!anchor) return;
+
+  /* ── Full-page canvas overlay ───────────────────────────── */
+  const canvas = document.createElement('canvas');
+  canvas.id = 'aboutRabbitCanvas';
+  Object.assign(canvas.style, {
+    position: 'fixed', top: '0', left: '0',
+    width: '100vw', height: '100vh',
+    pointerEvents: 'none',
+    zIndex: '10',
+  });
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+
+  /* S = pixels per sprite "pixel" */
+  const S = 2.5;
+
+  /* ── Pixel-art sprites (8 cols × 8 rows) ───────────────────
+       0 = transparent  1 = body colour  2 = eye / dark accent  */
+  const SPR_FRONT = [
+    [0,0,1,0,0,1,0,0],
+    [0,0,1,0,0,1,0,0],
+    [0,1,1,1,1,1,1,0],
+    [0,1,2,0,0,2,1,0],
+    [0,1,1,1,1,1,1,0],
+    [0,0,1,1,1,1,0,0],
+    [0,1,0,0,0,0,1,0],
+    [0,0,0,0,0,0,0,0],
+  ];
+
+  /* ── Pixel carrot (8 cols × 10 rows) ───────────────────────
+       0 = transparent  1 = orange  2 = dark orange  3 = green  */
+  const SPR_CARROT = [
+    [0,0,0,3,0,0,0,0],
+    [0,0,3,3,3,0,0,0],
+    [0,3,3,3,3,3,0,0],
+    [0,0,3,3,3,0,0,0],
+    [0,0,1,1,1,0,0,0],
+    [0,0,1,1,1,0,0,0],
+    [0,0,1,2,1,0,0,0],
+    [0,0,0,1,1,0,0,0],
+    [0,0,0,1,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+  ];
+
+  const SPR_W = 8 * S;
+  const SPR_H = 8 * S;
+  const CARROT_H = 10 * S;
+
+  /* ── Colours ────────────────────────────────────────────── */
+  const PURPLE  = '#9933ff';
+  const PURP_DK = '#1a0033';
+
+  /* ── State ──────────────────────────────────────────────── */
+  let cw, ch, frame = 0;
+  let carrotX, carrotY;
+  const V_SPD = 1.6;
+
+  const rabbit = {
+    x: 0, y: 0,
+    phase: 'waiting',   /* waiting | down | done */
+    targetY: 0,
+    bounceT: 0,
+  };
+
+  /* ── Position helpers ───────────────────────────────────── */
+  function getAnchorPos() {
+    const r = anchor.getBoundingClientRect();
+    return { x: r.right + 6, y: r.top + r.height * 0.5 };
+  }
+
+  function resize() {
+    cw = canvas.width  = window.innerWidth;
+    ch = canvas.height = window.innerHeight;
+    recalc();
+  }
+
+  function recalc() {
+    const pos = getAnchorPos();
+
+    /* carrot: right after "tinkerer.", vertically centred on the text */
+    carrotX = pos.x;
+    carrotY = pos.y - CARROT_H / 2;
+
+    /* rabbit target: just to the right of the carrot */
+    rabbit.targetY = carrotY - SPR_H + CARROT_H - 2;
+    rabbit.x = carrotX + SPR_W + 4;
+
+    /* if not yet moving, keep rabbit above viewport */
+    if (rabbit.phase === 'waiting') {
+      rabbit.y = -SPR_H - 20;
+    }
+    if (rabbit.phase === 'done') {
+      rabbit.y = rabbit.targetY;
+    }
+  }
+
+  window.addEventListener('resize', resize);
+  window.addEventListener('scroll', recalc);
+  resize();
+
+  /* ── Draw a sprite ──────────────────────────────────────── */
+  function drawSpr(spr, px, py, color1, color2) {
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        const cell = spr[row][col];
+        if (cell === 0) continue;
+        ctx.fillStyle = (cell === 1) ? color1 : color2;
+        ctx.fillRect(px + col * S, py + row * S, S, S);
+      }
+    }
+  }
+
+  /* ── Draw carrot ────────────────────────────────────────── */
+  function drawCarrot(x, y) {
+    const cols = ['#ff8800', '#cc6600', '#39ff6e'];
+    for (let row = 0; row < SPR_CARROT.length; row++) {
+      for (let col = 0; col < 8; col++) {
+        const cell = SPR_CARROT[row][col];
+        if (cell === 0) continue;
+        ctx.fillStyle = cols[cell - 1];
+        ctx.fillRect(x + col * S, y + row * S, S, S);
+      }
+    }
+  }
+
+  /* ── Step ────────────────────────────────────────────────── */
+  function step() {
+    frame++;
+
+    if (rabbit.phase === 'waiting') {
+      if (frame > 90) {
+        rabbit.phase = 'down';
+        rabbit.y = -SPR_H - 20;
+      }
+      return;
+    }
+
+    if (rabbit.phase === 'done') {
+      rabbit.bounceT++;
+      return;
+    }
+
+    if (rabbit.phase === 'down') {
+      rabbit.y += V_SPD;
+      if (rabbit.y >= rabbit.targetY) {
+        rabbit.y       = rabbit.targetY;
+        rabbit.phase   = 'done';
+        rabbit.bounceT = 0;
+      }
+    }
+  }
+
+  /* ── Main loop ──────────────────────────────────────────── */
+  function loop() {
+    ctx.clearRect(0, 0, cw, ch);
+    recalc();
+    step();
+
+    /* carrot (always visible, glowing) */
+    ctx.save();
+    ctx.shadowBlur  = 10;
+    ctx.shadowColor = '#ff8800';
+    drawCarrot(carrotX, carrotY);
+    ctx.restore();
+
+    /* rabbit */
+    if (rabbit.phase !== 'waiting') {
+      const by = rabbit.phase === 'done'
+        ? Math.round(Math.sin(rabbit.bounceT * 0.14) * 2.5)
+        : 0;
+
+      ctx.save();
+      ctx.shadowBlur  = 10;
+      ctx.shadowColor = PURPLE;
+      drawSpr(SPR_FRONT, Math.round(rabbit.x), Math.round(rabbit.y + by), PURPLE, PURP_DK);
+      ctx.restore();
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  setTimeout(() => requestAnimationFrame(loop), 500);
+}());
+</script>
+
+<script src="main.js"></script>
+
+</body>
+</html>
