@@ -28,8 +28,8 @@
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(57,255,110,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(57,255,110,0.04) 1px, transparent 1px);
+      linear-gradient(rgba(var(--green-rgb),0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(var(--green-rgb),0.04) 1px, transparent 1px);
     background-size: 60px 60px;
     mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
     -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
@@ -43,7 +43,7 @@
     width: 620px;
     height: 620px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(57,255,110,0.07) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(var(--green-rgb),0.07) 0%, transparent 70%);
     pointer-events: none;
     animation: orbPulse 7s ease-in-out infinite;
   }
@@ -72,7 +72,7 @@
   .hero-name em {
     font-style: italic;
     color: var(--green);
-    text-shadow: 0 0 40px rgba(57,255,110,0.35);
+    text-shadow: 0 0 40px rgba(var(--green-rgb),0.35);
   }
 
   .typing-wrap {
@@ -356,13 +356,13 @@
   .digest-play-btn:hover {
     border-color: var(--green);
     background: var(--green-faint);
-    box-shadow: 0 0 12px rgba(57,255,110,0.15);
+    box-shadow: 0 0 12px rgba(var(--green-rgb),0.15);
   }
 
   .digest-track {
     flex: 1;
     height: 3px;
-    background: rgba(57,255,110,0.12);
+    background: rgba(var(--green-rgb),0.12);
     position: relative;
     cursor: pointer;
     border-radius: 1px;
@@ -378,7 +378,7 @@
     height: 100%;
     width: 0%;
     background: var(--green);
-    box-shadow: 0 0 6px rgba(57,255,110,0.4);
+    box-shadow: 0 0 6px rgba(var(--green-rgb),0.4);
     border-radius: 1px;
     transition: width 0.1s linear;
   }
@@ -457,8 +457,8 @@
     font-family: var(--mono);
     font-size: 0.78rem;
     color: var(--green);
-    background: rgba(57,255,110,0.06);
-    border: 1px solid rgba(57,255,110,0.18);
+    background: rgba(var(--green-rgb),0.06);
+    border: 1px solid rgba(var(--green-rgb),0.18);
     padding: 0.25rem 0.6rem;
     display: inline-block;
     margin-top: 1.2rem;
@@ -503,7 +503,7 @@
     <li><a href="work.html">Work</a></li>
     <li><a href="art.html">Art</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="mailto:castellettirachel@gmail.com" class="nav-contact-link">castellettirachel@gmail.com</a></li>
+    <li><a href="mailto:rachelbuilds@mossfield.ca" class="nav-contact-link">rachelbuilds@mossfield.ca</a></li>
   </ul>
 </nav>
 
@@ -517,7 +517,7 @@
   </div>
   <div class="hero-cta" id="heroCta">
     <a href="work.html" class="btn-primary">View my work</a>
-    <a href="mailto:castellettirachel@gmail.com" class="btn-ghost">Hire me</a>
+    <a href="mailto:rachelbuilds@mossfield.ca" class="btn-ghost">Hire me</a>
   </div>
 </section>
 
@@ -635,7 +635,7 @@
     <span class="card-tag">./read-more</span>
     <span class="card-arrow">↗</span>
   </a>
-  <a href="mailto:castellettirachel@gmail.com" class="nav-card">
+  <a href="mailto:rachelbuilds@mossfield.ca" class="nav-card">
     <p class="card-number">04 — CONNECT</p>
     <h2 class="card-title">Hire &amp;<br><em>Collaborate</em></h2>
     <p class="card-desc">Open to freelance, contract, and full-time opportunities. Let's talk.</p>
@@ -656,7 +656,7 @@
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
       LinkedIn
     </a>
-    <a href="mailto:castellettirachel@gmail.com" class="footer-link">
+    <a href="mailto:rachelbuilds@mossfield.ca" class="footer-link">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
       Email
     </a>

@@ -10,17 +10,42 @@
 /* === DESIGN TOKENS === */
 :root {
   --green: #39ff6e;
+  --green-rgb: 57,255,110;
   --green-dim: #1a7a38;
   --green-faint: rgba(57,255,110,0.06);
   --green-border: rgba(57,255,110,0.15);
   --bg: #0a0d0b;
   --bg2: #0e1310;
   --bg3: #111a13;
+  --bg-rgb: 10,13,11;
   --ink: #e8ede9;
   --ink-dim: #7a9c82;
+  --nav-bg: rgba(10,13,11,0.88);
+  --scanline: rgba(0,0,0,0.07);
+  --btn-primary-ink: var(--bg);
   --serif: 'Cormorant Garamond', Georgia, serif;
   --mono: 'Share Tech Mono', monospace;
   --sans: 'Josefin Sans', sans-serif;
+}
+
+/* === LIGHT MODE — follows the user's OS / browser preference === */
+@media (prefers-color-scheme: light) {
+  :root {
+    --green: #1b7a36;
+    --green-rgb: 27,122,54;
+    --green-dim: #5ba870;
+    --green-faint: rgba(27,122,54,0.06);
+    --green-border: rgba(27,122,54,0.22);
+    --bg: #f6f8f5;
+    --bg2: #eef2ec;
+    --bg3: #e4ebe3;
+    --bg-rgb: 246,248,245;
+    --ink: #15201a;
+    --ink-dim: #5a7362;
+    --nav-bg: rgba(246,248,245,0.9);
+    --scanline: rgba(0,0,0,0.035);
+    --btn-primary-ink: #ffffff;
+  }
 }
 
 /* === BASE === */
@@ -41,7 +66,7 @@ body::before {
   inset: 0;
   background: repeating-linear-gradient(
     0deg, transparent, transparent 2px,
-    rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px
+    var(--scanline) 2px, var(--scanline) 4px
   );
   pointer-events: none;
   z-index: 1000;
@@ -56,7 +81,7 @@ nav {
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 3rem;
-  background: rgba(10,13,11,0.88);
+  background: var(--nav-bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--green-border);
 }
@@ -80,7 +105,7 @@ nav {
   background: var(--green);
   margin-left: 3px;
   vertical-align: middle;
-  box-shadow: 0 0 8px rgba(57,255,110,0.7);
+  box-shadow: 0 0 8px rgba(var(--green-rgb),0.7);
   animation: pulse 2.4s ease-in-out infinite;
 }
 
@@ -148,8 +173,8 @@ nav {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(57,255,110,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(57,255,110,0.03) 1px, transparent 1px);
+    linear-gradient(rgba(var(--green-rgb),0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--green-rgb),0.03) 1px, transparent 1px);
   background-size: 60px 60px;
   mask-image: radial-gradient(ellipse 70% 100% at 20% 50%, black 20%, transparent 80%);
   -webkit-mask-image: radial-gradient(ellipse 70% 100% at 20% 50%, black 20%, transparent 80%);
@@ -181,7 +206,7 @@ nav {
 .page-title em {
   font-style: italic;
   color: var(--green);
-  text-shadow: 0 0 40px rgba(57,255,110,0.3);
+  text-shadow: 0 0 40px rgba(var(--green-rgb),0.3);
 }
 
 .page-subtitle {
@@ -219,17 +244,17 @@ nav {
   text-decoration: none;
   padding: 0.85rem 2rem;
   border: 1px solid var(--green);
-  color: var(--bg);
+  color: var(--btn-primary-ink);
   background: var(--green);
   transition: all 0.22s;
-  box-shadow: 0 0 20px rgba(57,255,110,0.22);
+  box-shadow: 0 0 20px rgba(var(--green-rgb),0.22);
   white-space: nowrap;
 }
 
 .btn-primary:hover {
   background: transparent;
   color: var(--green);
-  box-shadow: 0 0 32px rgba(57,255,110,0.4);
+  box-shadow: 0 0 32px rgba(var(--green-rgb),0.4);
 }
 
 .btn-ghost {
@@ -240,7 +265,7 @@ nav {
   text-transform: uppercase;
   text-decoration: none;
   padding: 0.85rem 2rem;
-  border: 1px solid rgba(57,255,110,0.3);
+  border: 1px solid rgba(var(--green-rgb),0.3);
   color: var(--ink-dim);
   background: transparent;
   transition: all 0.22s;
@@ -250,7 +275,7 @@ nav {
 .btn-ghost:hover {
   border-color: var(--green);
   color: var(--green);
-  box-shadow: 0 0 18px rgba(57,255,110,0.18);
+  box-shadow: 0 0 18px rgba(var(--green-rgb),0.18);
 }
 
 /* === TAGS === */
@@ -258,8 +283,8 @@ nav {
   font-family: var(--mono);
   font-size: 0.78rem;
   color: var(--green);
-  border: 1px solid rgba(57,255,110,0.2);
-  background: rgba(57,255,110,0.05);
+  border: 1px solid rgba(var(--green-rgb),0.2);
+  background: rgba(var(--green-rgb),0.05);
   padding: 0.25rem 0.6rem;
   letter-spacing: 0.12em;
   white-space: nowrap;
@@ -401,8 +426,8 @@ footer {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(57,255,110,0.7); }
-  50%       { opacity: 0.35; box-shadow: 0 0 3px rgba(57,255,110,0.2); }
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px rgba(var(--green-rgb),0.7); }
+  50%       { opacity: 0.35; box-shadow: 0 0 3px rgba(var(--green-rgb),0.2); }
 }
 
 /* === RESPONSIVE (shared breakpoints) === */
