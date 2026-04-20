@@ -33,15 +33,15 @@
   :root {
     --green: #1b7a36;
     --green-rgb: 27,122,54;
-    --green-dim: #5ba870;
-    --green-faint: rgba(27,122,54,0.06);
-    --green-border: rgba(27,122,54,0.22);
+    --green-dim: #2d6640;
+    --green-faint: rgba(27,122,54,0.08);
+    --green-border: rgba(27,122,54,0.32);
     --bg: #f6f8f5;
     --bg2: #eef2ec;
     --bg3: #e4ebe3;
     --bg-rgb: 246,248,245;
     --ink: #15201a;
-    --ink-dim: #5a7362;
+    --ink-dim: #3d4e44;
     --nav-bg: rgba(246,248,245,0.9);
     --scanline: rgba(0,0,0,0.035);
     --btn-primary-ink: #ffffff;
