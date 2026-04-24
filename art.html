@@ -346,25 +346,6 @@
       </div>
     </div>
 
-    <!-- PIECE 3: FULL-WIDTH — RECURSIVE TREE -->
-    <div class="gen-piece full-width">
-      <canvas id="fractalTree"></canvas>
-      <div class="gen-piece-info">
-        <div class="gen-piece-left">
-          <div class="gen-piece-meta">
-            <span class="gen-piece-number">003</span>
-            <span class="gen-piece-tech">CANVAS · RECURSION</span>
-          </div>
-          <h3 class="gen-piece-title">Recursive <em>Growth</em></h3>
-          <p class="gen-piece-desc">A fractal tree that grows and sways. Each branch angle is influenced by cursor position — pull the wind left or right.</p>
-          <p class="gen-piece-hint">[ move cursor left/right to change wind ]</p>
-        </div>
-        <div class="gen-piece-right">
-          The algorithm starts with a trunk and recursively splits into branches. Each level reduces length by a decay factor and rotates by an angle offset. Cursor position maps to a <code>windAngle</code> variable that biases all branch rotations, creating the illusion of a breeze. Depth is capped at 11 levels to keep things smooth.
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
@@ -719,87 +700,6 @@
 
   window.addEventListener('resize', () => { init(); requestAnimationFrame(draw); });
   init();
-  requestAnimationFrame(draw);
-}());
-
-
-/* ═══════════════════════════════════════════════════════════════
-   003 — FRACTAL TREE
-   Recursive branching tree. Cursor X controls wind angle.
-═══════════════════════════════════════════════════════════════ */
-(function () {
-  'use strict';
-  const canvas = document.getElementById('fractalTree');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H;
-  let windAngle = 0;
-  let time = 0;
-
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    W = canvas.width = rect.width;
-    H = canvas.height = 360;
-  }
-
-  function branch(x, y, len, angle, depth) {
-    if (depth === 0 || len < 2) return;
-
-    const sway = Math.sin(time * 0.002 + depth * 0.5) * 0.03;
-    const endX = x + Math.cos(angle + sway) * len;
-    const endY = y + Math.sin(angle + sway) * len;
-
-    const alpha = 0.15 + (depth / 11) * 0.5;
-    ctx.strokeStyle = `rgba(57,255,110,${alpha})`;
-    ctx.lineWidth = depth * 0.6;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(endX, endY);
-    ctx.stroke();
-
-    /* glow on tips */
-    if (depth <= 2) {
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = 'rgba(57,255,110,0.4)';
-      ctx.beginPath();
-      ctx.arc(endX, endY, 1.2, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(57,255,110,0.5)';
-      ctx.fill();
-      ctx.shadowBlur = 0;
-    }
-
-    const decay = 0.7 + Math.random() * 0.05;
-    const spread = 0.42 + windAngle * 0.3;
-
-    branch(endX, endY, len * decay, angle - spread + windAngle * 0.15, depth - 1);
-    branch(endX, endY, len * decay, angle + spread + windAngle * 0.15, depth - 1);
-  }
-
-  function draw() {
-    time++;
-    ctx.clearRect(0, 0, W, H);
-
-    /* trunk starts from bottom center */
-    const startX = W / 2;
-    const startY = H - 20;
-    const trunkLen = H * 0.22;
-
-    branch(startX, startY, trunkLen, -Math.PI / 2, 11);
-    requestAnimationFrame(draw);
-  }
-
-  canvas.addEventListener('mousemove', (e) => {
-    const rect = canvas.getBoundingClientRect();
-    const mx = (e.clientX - rect.left) / rect.width;
-    windAngle = (mx - 0.5) * 0.8;
-  });
-
-  canvas.addEventListener('mouseleave', () => {
-    windAngle = 0;
-  });
-
-  window.addEventListener('resize', resize);
-  resize();
   requestAnimationFrame(draw);
 }());
 
